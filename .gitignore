@@ -2,8 +2,13 @@
 /node_modules
 
 # yarn
-/.yarn
-/.husky
+/.yarn/*
+!/.yarn/patches
+!/.yarn/plugins
+!/.yarn/releases
+!/.yarn/sdks
+!/.yarn/versions
+
 # eslint
 /.eslintcache
 
