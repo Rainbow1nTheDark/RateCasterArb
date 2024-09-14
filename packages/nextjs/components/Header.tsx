@@ -25,8 +25,8 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <DocumentPlusIcon className="h-4 w-4 text-[#7e5bc2]" />,
   },
   {
-    label: "Submitted Reviews",
-    href: "/reviews",
+    label: "Leaderboard",
+    href: "/leaderboard",
     icon: <DocumentDuplicateIcon className="h-4 w-4 text-[#7e5bc2]" />,
   },
 ];
