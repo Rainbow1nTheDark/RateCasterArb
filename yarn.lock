@@ -8014,9 +8014,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.12.1":
-  version: 6.12.1
-  resolution: "ethers@npm:6.12.1"
+"ethers@npm:^6.13.2":
+  version: 6.13.2
+  resolution: "ethers@npm:6.13.2"
   dependencies:
     "@adraffy/ens-normalize": 1.10.1
     "@noble/curves": 1.2.0
@@ -8024,8 +8024,8 @@ __metadata:
     "@types/node": 18.15.13
     aes-js: 4.0.0-beta.5
     tslib: 2.4.0
-    ws: 8.5.0
-  checksum: ddf398c91f584b9e643740ec17a9c82b4a1c4ea3fb6efd00f1a043b89d1ec6f9427aa80894f75850ee805722e91b8d054bce18579a2c621226302c096774df90
+    ws: 8.17.1
+  checksum: 981860c736c7ae121774ad38ea07e3611ce524a77d2fcb77db499b65afe0cbe8f344cd5204d94b68b316349ff770fd2a7d9c8b2039da41c072f98d9864099925
   languageName: node
   linkType: hard
 
@@ -13957,7 +13957,7 @@ __metadata:
     "@types/semver": ^7.5.8
     axios: ^1.6.8
     dotenv: ^16.4.5
-    ethers: ^6.12.1
+    ethers: ^6.13.2
     graphql: ^16.8.1
     graphql-request: 5.1.0
     husky: ^8.0.1

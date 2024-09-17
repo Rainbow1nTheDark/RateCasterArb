@@ -2,12 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  DappRating,
-  DappRegistered,
-  fetchDappRatings,
-  fetchGraphQLRegisteredDapps,
-} from "~~/utils/graphQL/fetchFromSubgraph";
+import { createConfig, http } from "@wagmi/core";
+import { readContract } from "@wagmi/core";
+import { baseSepolia } from "@wagmi/core/chains";
+import deployedContracts from "~~/contracts/deployedContracts";
+import { DappRating, DappRegistered, fetchDappRatings } from "~~/utils/graphQL/fetchFromSubgraph";
 
 type RatingsMap = { [dappId: string]: number };
 
@@ -17,26 +16,44 @@ const Home = () => {
   const [allDapps, setAllDapps] = useState<DappRegistered[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  console.log("useEffect executed");
   useEffect(() => {
+    console.log("useEffect executed"); // Log to verify useEffect execution
     const fetchData = async () => {
+      console.log("Fetching data...");
       try {
         setLoading(true);
-        const dappResult = await fetchGraphQLRegisteredDapps();
-        let ratingsMap: RatingsMap = {};
 
-        if (dappResult && dappResult.data) {
+        const config = createConfig({
+          chains: [baseSepolia],
+          transports: {
+            [baseSepolia.id]: http(),
+          },
+        });
+        const contract_address = deployedContracts[84532].DappRatingSystem.address;
+        const abi = deployedContracts[84532].DappRatingSystem.abi;
+        const dappData = await readContract(config, {
+          address: contract_address,
+          abi,
+          functionName: "getAllDapps",
+        });
+
+        // const dappResult = await fetchGraphQLRegisteredDapps();
+        let ratingsMap: RatingsMap = {};
+        console.log(dappData);
+        if (dappData) {
           try {
             const ratingsData = await fetchDappRatings();
             if (ratingsData && ratingsData.data) {
               console.log(ratingsData.data.dappRatingSubmitteds);
               ratingsMap = computeAverageRatings(ratingsData.data.dappRatingSubmitteds);
+              console.log(ratingsMap);
             }
           } catch (ratingsError) {
             console.error("Error fetching ratings:", ratingsError);
           }
 
-          const enrichedDapps = dappResult.data.dappRegistereds.map(dapp => ({
+          const enrichedDapps = dappData.map((dapp: any) => ({
             ...dapp,
             averageRating: ratingsMap[dapp.dappId] ?? 0,
           }));
@@ -141,7 +158,7 @@ const Home = () => {
                       Visit Site
                     </a>
                     <a
-                      href={`/rate-dapp?id=${dapp.id}`}
+                      href={`/rate-dapp?dappId=${dapp.dappId}`}
                       className="text-blue-500 hover:underline"
                       style={{ color: "#7e5bc2" }}
                     >

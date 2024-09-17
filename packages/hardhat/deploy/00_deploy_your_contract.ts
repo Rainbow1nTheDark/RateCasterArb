@@ -26,7 +26,7 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
 
   //from: "0xfAf3fb18C9CFCD328B1DFDf55078C9BfE5e20740",
   await deploy("DappRaterSchemaResolver", {
-    from: "0xfAf3fb18C9CFCD328B1DFDf55078C9BfE5e20740", //deployer,
+    from: "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB", //deployer,
     // Contract constructor arguments
     args: [EAS_CONTRACT_ADDRESS],
     log: true,
@@ -38,12 +38,12 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   // Get the deployed contract to interact with it after deploying.
   const schemaResolver = await hre.ethers.getContract<Contract>(
     "DappRaterSchemaResolver",
-    "0xfAf3fb18C9CFCD328B1DFDf55078C9BfE5e20740",
+    "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB",
   );
   console.log("👋 Schema resolver version: ", await schemaResolver.version());
 
   await deploy("DappRatingSystem", {
-    from: "0xfAf3fb18C9CFCD328B1DFDf55078C9BfE5e20740", //deployer,
+    from: "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB", //deployer,
     args: [EAS_CONTRACT_ADDRESS, DAPP_RATER_SCHEMA],
     log: true,
     autoMine: true,

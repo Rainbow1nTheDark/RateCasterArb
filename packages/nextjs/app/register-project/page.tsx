@@ -37,6 +37,8 @@ const RegisterProject: NextPage = () => {
     url: "",
     parsedUrl: "",
     imageURL: "",
+    platform: "",
+    category: "",
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -75,13 +77,14 @@ const RegisterProject: NextPage = () => {
     const url = formData.get("url") as string;
     const imageURL = formData.get("imageURL") as string;
     const description = formData.get("description") as string;
-    console.log("IMG");
-    console.log(imageURL);
+    const platform = formData.get("platform") as string;
+    const category = formData.get("category") as string;
+
     await writeContract({
       address: deployedContracts[84532].DappRatingSystem.address,
       abi: deployedContracts[84532].DappRatingSystem.abi,
       functionName: "registerDapp",
-      args: [name, description, url, imageURL],
+      args: [name, description, url, imageURL, platform, category],
     });
 
     setIsModalVisible(true);
@@ -89,7 +92,7 @@ const RegisterProject: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center pt-10 w-full">
-      <h1 className="text-4xl font-bold text-[#7e5bc2] mb-6">Register New Fapp!</h1>
+      <h1 className="text-4xl font-bold text-[#7e5bc2] mb-6">Register New Dapp!</h1>
       <form onSubmit={submit} className="space-y-4 w-full max-w-md">
         <div className="flex flex-col">
           <label className="block mb-2">Name:</label>
@@ -128,6 +131,28 @@ const RegisterProject: NextPage = () => {
           <textarea
             name="description"
             value={formData.description}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="block mb-2">Platform:</label>
+          <input
+            type="text"
+            name="platform"
+            value={formData.platform}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="block mb-2">Category:</label>
+          <input
+            type="text"
+            name="category"
+            value={formData.category}
             onChange={handleChange}
             className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
             required

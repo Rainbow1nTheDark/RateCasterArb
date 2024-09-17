@@ -21,7 +21,7 @@ const query = gql`
   }
 `;
 
-interface Attestation {
+export interface Attestation {
   schemaId: string;
   id: string;
   txid: string;
@@ -46,7 +46,7 @@ interface AttestationsData {
   attestations: Attestation[];
 }
 
-const fetchAttestations = async (): Promise<Attestation[]> => {
+export const fetchAttestations = async (): Promise<Attestation[]> => {
   if (typeof GRAPH_ENDPOINT !== "string") {
     console.log("SCHEMA_ID:", SCHEMA_ID);
     console.log("GRAPH_ENDPOINT:", GRAPH_ENDPOINT);

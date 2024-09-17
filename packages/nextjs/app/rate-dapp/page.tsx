@@ -2,15 +2,37 @@
 
 import React, { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { createConfig, http } from "@wagmi/core";
+import { readContract } from "@wagmi/core";
+import { baseSepolia } from "@wagmi/core/chains";
 import { useWriteContract } from "wagmi";
 import deployedContracts from "~~/contracts/deployedContracts";
-import { DappRegistered, fetchGraphQLRegisteredDappByID } from "~~/utils/graphQL/fetchFromSubgraph";
+import { DappRegistered } from "~~/utils/graphQL/fetchFromSubgraph";
 
 // Define the types for the Modal component props
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
   children: React.ReactNode;
+}
+
+async function getDappByDappId(dappId: string): Promise<DappRegistered> {
+  const config = createConfig({
+    chains: [baseSepolia],
+    transports: {
+      [baseSepolia.id]: http(),
+    },
+  });
+  const contract_address = deployedContracts[84532].DappRatingSystem.address;
+  const abi = deployedContracts[84532].DappRatingSystem.abi;
+  const dappData = await readContract(config, {
+    address: contract_address,
+    abi,
+    functionName: "getDapp",
+    args: [dappId as `0x${string}`],
+  });
+
+  return dappData;
 }
 
 const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
@@ -32,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
 const RateDapp = () => {
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const dappId = searchParams.get("dappId");
   const { data: hash, isPending, writeContract } = useWriteContract();
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
@@ -45,10 +67,10 @@ const RateDapp = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchGraphQLRegisteredDappByID(id);
-        if (result && result.data && result.data.dappRegistered) {
+        const result = await getDappByDappId(dappId as string);
+        if (result) {
           console.log(result);
-          setDappDetails(result.data.dappRegistered);
+          setDappDetails(result);
           setError("");
         } else {
           setError("No data returned");
@@ -59,8 +81,8 @@ const RateDapp = () => {
         setLoading(false);
       }
     };
-    if (id) fetchData();
-  }, [id]);
+    if (dappId) fetchData();
+  }, [dappId]);
 
   const submitReview = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,12 +93,12 @@ const RateDapp = () => {
         address: deployedContracts[84532].DappRatingSystem.address,
         abi: deployedContracts[84532].DappRatingSystem.abi,
         functionName: "addDappRating",
-        args: [dappDetails.dappId, rating, comment],
+        args: [dappDetails.dappId as `0x${string}`, rating, comment],
       });
 
       setIsModalVisible(true);
     } else {
-      console.log(`Wrong ID: ${id}`);
+      console.log(`Wrong ID: ${dappDetails?.dappId}`);
     }
   };
 

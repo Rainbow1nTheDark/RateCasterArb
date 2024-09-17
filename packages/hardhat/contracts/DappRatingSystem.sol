@@ -6,10 +6,26 @@ import { IEAS, AttestationRequest, AttestationRequestData, RevocationRequest, Re
 import { NO_EXPIRATION_TIME, EMPTY_UID } from "@ethereum-attestation-service/eas-contracts/contracts/Common.sol";
 
 contract DappRatingSystem {
+    struct Dapp {
+        bytes32 dappId;
+        string name;
+        string description;
+        string url;
+        string imageUrl;
+        string platform;
+        string category;
+        address owner;
+    }
+
+    Dapp[] public dapps; 
     uint256 public dappCounter;
     mapping(bytes32 => bool) public dappIdIsRegistered;
+    mapping(bytes32 => uint256) private dappIndex; // Mapping to store the index of each Dapp in the array
 
-    event DappRegistered(bytes32 indexed dappId, string name, string description, string url, string imageURL, address owner, uint256 registrationTime);
+    // Dapp registration event
+    event DappRegistered(bytes32 indexed dappId, string name, string description, string url, string imageURL, string platform, string category, address owner, uint256 registrationTime);
+    event DappUpdated(bytes32 indexed dappId, string name, string description, string url, string imageURL, string platform, string category, address owner);
+    event DappDeleted(bytes32 indexed dappId);
     event DappRatingSubmitted(bytes32 indexed attestationId, bytes32 indexed dappId, uint8 starRating, string reviewText);
     event DappRatingRevoked(bytes32 indexed ratingUid, address indexed revokedBy, uint256 revokedAt);
 
@@ -18,6 +34,7 @@ contract DappRatingSystem {
     error InvalidRatingUID();
     error InvalidDappId();
     error InvalidStarRating();
+    error NotDappOwner();
 
     // The address of the global EAS contract.
     IEAS private immutable _eas;
@@ -37,7 +54,7 @@ contract DappRatingSystem {
         _schemaUid = schema;
     }
 
-    function registerDapp(string memory _name, string memory _description, string memory _url, string memory _imageURL) public {
+    function registerDapp(string memory _name, string memory _description, string memory _url, string memory _imageURL, string memory _platform, string memory _category) public {
         // Calculate the dappId by hashing the URL
         bytes32 _dappId = keccak256(abi.encodePacked(_url));
 
@@ -48,12 +65,69 @@ contract DappRatingSystem {
         dappCounter++;
         dappIdIsRegistered[_dappId] = true;
 
+        // Create a new Dapp struct and add it to the array
+        Dapp memory newDapp = Dapp({
+            dappId: _dappId,
+            name: _name,
+            description: _description,
+            url: _url,
+            imageUrl: _imageURL,
+            platform: _platform,
+            category: _category,
+            owner: msg.sender
+        });
+        dapps.push(newDapp);
+        dappIndex[_dappId] = dapps.length - 1;
+
         // Emit the DappRegistered event
-        emit DappRegistered(_dappId, _name, _description, _url, _imageURL, msg.sender, block.timestamp);
+        emit DappRegistered(_dappId, _name, _description, _url, _imageURL, _platform, _category, msg.sender, block.timestamp);
+    }
+
+    function updateDapp(bytes32 _dappId, string memory _name, string memory _description, string memory _url, string memory _imageURL, string memory _platform, string memory _category) public {
+        require(dappIdIsRegistered[_dappId], "Dapp not registered");
+        uint256 index = dappIndex[_dappId];
+        Dapp storage dapp = dapps[index];
+        require(dapp.owner == msg.sender, "Not the owner of the Dapp");
+
+        dapp.name = _name;
+        dapp.description = _description;
+        dapp.url = _url;
+        dapp.imageUrl = _imageURL;
+        dapp.platform = _platform;
+        dapp.category = _category;
+
+        emit DappUpdated(_dappId, _name, _description, _url, _imageURL, _platform, _category, msg.sender);
+    }
+
+    function deleteDapp(bytes32 _dappId) public {
+        require(dappIdIsRegistered[_dappId], "Dapp not registered");
+        uint256 index = dappIndex[_dappId];
+        Dapp storage dapp = dapps[index];
+        require(dapp.owner == msg.sender, "Not the owner of the Dapp");
+
+        // Move the last element into the place to delete
+        dapps[index] = dapps[dapps.length - 1];
+        dappIndex[keccak256(abi.encodePacked(dapps[index].url))] = index;
+        dapps.pop();
+
+        delete dappIdIsRegistered[_dappId];
+        delete dappIndex[_dappId];
+
+        emit DappDeleted(_dappId);
     }
 
     function isDappRegistered(bytes32 dappId) external view returns (bool) {
         return dappIdIsRegistered[dappId];
+    }
+
+    function getAllDapps() external view returns (Dapp[] memory) {
+        return dapps;
+    }
+
+    function getDapp(bytes32 dappId) external view returns (Dapp memory) {
+        require(dappIdIsRegistered[dappId], "Dapp not registered");
+        uint256 index = dappIndex[dappId];
+        return dapps[index];
     }
 
     function addDappRating(bytes32 dappId, uint8 starRating, string memory reviewText) external returns (bytes32) {
