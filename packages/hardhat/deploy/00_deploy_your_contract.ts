@@ -21,12 +21,13 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   */
   // const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
-  const EAS_CONTRACT_ADDRESS = "0x4200000000000000000000000000000000000021";
+  const EAS_CONTRACT_ADDRESS = "0xb101275a60d8bfb14529C421899aD7CA1Ae5B5Fc"; // Polygon Amoy
   const DAPP_RATER_SCHEMA = "0xeaa96eb7dd9a3101cabc983cfbfcacc1594c70832d37a79b51bc43db4e4e40fb";
+  const deployer = "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB";
 
-  //from: "0xfAf3fb18C9CFCD328B1DFDf55078C9BfE5e20740",
+  console.log("Deploying DappRaterSchemaResolver");
   await deploy("DappRaterSchemaResolver", {
-    from: "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB", //deployer,
+    from: deployer,
     // Contract constructor arguments
     args: [EAS_CONTRACT_ADDRESS],
     log: true,
@@ -36,14 +37,12 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   });
 
   // Get the deployed contract to interact with it after deploying.
-  const schemaResolver = await hre.ethers.getContract<Contract>(
-    "DappRaterSchemaResolver",
-    "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB",
-  );
+  const schemaResolver = await hre.ethers.getContract<Contract>("DappRaterSchemaResolver", deployer);
   console.log("👋 Schema resolver version: ", await schemaResolver.version());
 
+  console.log("Deploying DappRatingSystem");
   await deploy("DappRatingSystem", {
-    from: "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB", //deployer,
+    from: deployer,
     args: [EAS_CONTRACT_ADDRESS, DAPP_RATER_SCHEMA],
     log: true,
     autoMine: true,

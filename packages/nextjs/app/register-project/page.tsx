@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import type { NextPage } from "next";
 import { useWriteContract } from "wagmi";
-import deployedContracts from "~~/contracts/deployedContracts";
+import { abi, contract_address } from "~~/contracts/contractCalls";
 
 // Define the types for the Modal component props
 interface ModalProps {
@@ -81,8 +81,8 @@ const RegisterProject: NextPage = () => {
     const category = formData.get("category") as string;
 
     await writeContract({
-      address: deployedContracts[84532].DappRatingSystem.address,
-      abi: deployedContracts[84532].DappRatingSystem.abi,
+      address: contract_address,
+      abi: abi,
       functionName: "registerDapp",
       args: [name, description, url, imageURL, platform, category],
     });

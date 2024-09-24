@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { createConfig, http } from "@wagmi/core";
-import { readContract } from "@wagmi/core";
-import { baseSepolia } from "@wagmi/core/chains";
-import deployedContracts from "~~/contracts/deployedContracts";
+import { getAllDapps } from "~~/contracts/contractCalls";
 import { DappRating, DappRegistered, fetchDappRatings } from "~~/utils/graphQL/fetchFromSubgraph";
 
 type RatingsMap = { [dappId: string]: number };
@@ -24,20 +21,7 @@ const Home = () => {
       try {
         setLoading(true);
 
-        const config = createConfig({
-          chains: [baseSepolia],
-          transports: {
-            [baseSepolia.id]: http(),
-          },
-        });
-        const contract_address = deployedContracts[84532].DappRatingSystem.address;
-        const abi = deployedContracts[84532].DappRatingSystem.abi;
-        const dappData = await readContract(config, {
-          address: contract_address,
-          abi,
-          functionName: "getAllDapps",
-        });
-
+        const dappData = await getAllDapps();
         // const dappResult = await fetchGraphQLRegisteredDapps();
         let ratingsMap: RatingsMap = {};
         console.log(dappData);
@@ -144,9 +128,13 @@ const Home = () => {
                 >
                   {/* Add the icon here */}
                   <img
-                    src={dapp.url + "favicon.ico"} // Assuming each dapp has an iconUrl property
+                    src={dapp.url + "favicon.ico"}
                     alt={`${dapp.name} icon`}
                     className="w-12 h-12 mb-2" // 48x48 pixels with some margin
+                    onError={e => {
+                      // Hide the image if it fails to load
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
                   />
                   <h3 className="font-semibold text-lg text-center" style={{ color: "#7e5bc2" }}>
                     {dapp.name}

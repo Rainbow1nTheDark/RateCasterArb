@@ -6,6 +6,7 @@ import { createConfig, http } from "@wagmi/core";
 import { readContract } from "@wagmi/core";
 import { baseSepolia } from "@wagmi/core/chains";
 import { useWriteContract } from "wagmi";
+import { CHAIN_ID } from "~~/contracts/defaultSettings";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { DappRegistered } from "~~/utils/graphQL/fetchFromSubgraph";
 
@@ -23,8 +24,8 @@ async function getDappByDappId(dappId: string): Promise<DappRegistered> {
       [baseSepolia.id]: http(),
     },
   });
-  const contract_address = deployedContracts[84532].DappRatingSystem.address;
-  const abi = deployedContracts[84532].DappRatingSystem.abi;
+  const contract_address = deployedContracts[CHAIN_ID].DappRatingSystem.address;
+  const abi = deployedContracts[CHAIN_ID].DappRatingSystem.abi;
   const dappData = await readContract(config, {
     address: contract_address,
     abi,
@@ -90,8 +91,8 @@ const RateDapp = () => {
     console.log(`${comment} ${rating}`);
     if (dappDetails?.dappId) {
       await writeContract({
-        address: deployedContracts[84532].DappRatingSystem.address,
-        abi: deployedContracts[84532].DappRatingSystem.abi,
+        address: deployedContracts[CHAIN_ID].DappRatingSystem.address,
+        abi: deployedContracts[CHAIN_ID].DappRatingSystem.abi,
         functionName: "addDappRating",
         args: [dappDetails.dappId as `0x${string}`, rating, comment],
       });
