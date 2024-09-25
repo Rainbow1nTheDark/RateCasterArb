@@ -2,11 +2,9 @@
 
 import React, { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { createConfig, http } from "@wagmi/core";
 import { readContract } from "@wagmi/core";
-import { baseSepolia } from "@wagmi/core/chains";
 import { useWriteContract } from "wagmi";
-import { CHAIN_ID } from "~~/contracts/defaultSettings";
+import { CHAIN_ID, config } from "~~/contracts/defaultSettings";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { DappRegistered } from "~~/utils/graphQL/fetchFromSubgraph";
 
@@ -18,12 +16,6 @@ interface ModalProps {
 }
 
 async function getDappByDappId(dappId: string): Promise<DappRegistered> {
-  const config = createConfig({
-    chains: [baseSepolia],
-    transports: {
-      [baseSepolia.id]: http(),
-    },
-  });
   const contract_address = deployedContracts[CHAIN_ID].DappRatingSystem.address;
   const abi = deployedContracts[CHAIN_ID].DappRatingSystem.abi;
   const dappData = await readContract(config, {

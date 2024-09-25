@@ -1,3 +1,4 @@
+import { DappRating } from "./fetchFromSubgraph";
 import * as dotenv from "dotenv";
 import { ethers } from "ethers";
 import { GraphQLClient, gql } from "graphql-request";
@@ -30,16 +31,6 @@ export interface Attestation {
   recipient: string;
   decodedDataJson: string;
   revoked: boolean;
-}
-
-interface DecodedData {
-  projectId: string;
-  starRating: number;
-  reviewText: string;
-}
-
-interface AttestationWithDecodedData extends Attestation {
-  decodedData: DecodedData;
 }
 
 interface AttestationsData {
@@ -76,23 +67,29 @@ const decodeData = (data: string) => {
   };
 };
 
-export const getSchemaData = async (): Promise<AttestationWithDecodedData[]> => {
+export const getSchemaData = async (): Promise<DappRating[]> => {
   try {
     const attestations = await fetchAttestations();
+    console.log(attestations);
     return attestations.map(attestation => {
       try {
         const decodedData = decodeData(attestation.data);
-        return { ...attestation, decodedData };
+        return {
+          id: attestation.id,
+          attestationId: attestation.id, // Using the attestation id as attestationId
+          dappId: decodedData.projectId,
+          starRating: decodedData.starRating,
+          reviewText: decodedData.reviewText,
+        };
       } catch (decodeError) {
         console.error(`Error decoding attestation data for ${attestation.id}:`, decodeError);
-        // Attach default decoded data in case of error
+        // Return a default DappRating object in case of error
         return {
-          ...attestation,
-          decodedData: {
-            projectId: "",
-            starRating: 0,
-            reviewText: "Error decoding data",
-          },
+          id: attestation.id,
+          attestationId: attestation.id,
+          dappId: "",
+          starRating: 0,
+          reviewText: "Error decoding data",
         };
       }
     });
