@@ -24,7 +24,7 @@ const Leaderboard: NextPage = () => {
 
   const getLeaderboardData = async () => {
     try {
-      const url = process.env.FRAMES_API_URL || "http://localhost:3000/api/leaderboard";
+      const url = process.env.FRAMES_API_URL || "https://frames.ratecaster.xyz/api/leaderboard";
       console.log("Fetching data from URL:", url); // Log the URL
       const response = await fetch(url);
       if (!response.ok) {
@@ -33,7 +33,11 @@ const Leaderboard: NextPage = () => {
       const data: LeaderboardResponse = await response.json();
       const leaderboardWithUsernames = await Promise.all(
         data.leaderboard.map(async entry => {
-          const userResponse = await fetch(`https://api.warpcast.com/v2/user?fid=${entry.fid}`);
+          const userResponse = await fetch(`/api/warpcaster?fid=${entry.fid}`);
+          if (!userResponse.ok) {
+            console.error(`Failed to fetch user data for FID ${entry.fid}`);
+            return entry;
+          }
           const userData = await userResponse.json();
           return { ...entry, username: userData.result.user.username };
         }),
