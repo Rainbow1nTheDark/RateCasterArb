@@ -24,7 +24,7 @@ const Leaderboard: NextPage = () => {
 
   const getLeaderboardData = async () => {
     try {
-      const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/leaderboard";
+      const url = process.env.FRAMES_API_URL || "http://localhost:3000/api/leaderboard";
       console.log("Fetching data from URL:", url); // Log the URL
       const response = await fetch(url);
       if (!response.ok) {

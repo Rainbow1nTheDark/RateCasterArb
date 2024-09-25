@@ -21,9 +21,14 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   */
   // const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
-  const EAS_CONTRACT_ADDRESS = "0xb101275a60d8bfb14529C421899aD7CA1Ae5B5Fc"; // Polygon Amoy
-  const DAPP_RATER_SCHEMA = "0xeaa96eb7dd9a3101cabc983cfbfcacc1594c70832d37a79b51bc43db4e4e40fb";
-  const deployer = "0x76ef7734E8c5f84b62e3b8fAae6F4995bFea64AB";
+  const EAS_CONTRACT_ADDRESS = "0x5E634ef5355f45A855d02D66eCD687b1502AF790"; // Polygon Mainnet
+
+  // ******* Schema Addresses:
+  // Base-Sepolia: "0xeaa96eb7dd9a3101cabc983cfbfcacc1594c70832d37a79b51bc43db4e4e40fb";
+  // Polygon Mainnet: '0x2330fb2f2197b04f5f09645fec2ea4d2420f5f3715796b846384a03e959f2845';
+
+  const DAPP_RATER_SCHEMA = "0x2330fb2f2197b04f5f09645fec2ea4d2420f5f3715796b846384a03e959f2845"; // Polygon Mainnet
+  const deployer = "0xfAf3fb18C9CFCD328B1DFDf55078C9BfE5e20740";
 
   console.log("Deploying DappRaterSchemaResolver");
   await deploy("DappRaterSchemaResolver", {
@@ -53,4 +58,4 @@ export default deployDappRaterSchemaResolver;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployDappRaterSchemaResolver.tags = ["DappRatingSystem", "DappRaterSchemaResolver"];
+deployDappRaterSchemaResolver.tags = ["DappRatingSystem"]; //"DappRatingSystem",

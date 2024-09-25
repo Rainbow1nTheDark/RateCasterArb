@@ -13,9 +13,8 @@ const Home = () => {
   const [allDapps, setAllDapps] = useState<DappRegistered[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  console.log("useEffect executed");
+
   useEffect(() => {
-    console.log("useEffect executed"); // Log to verify useEffect execution
     const fetchData = async () => {
       console.log("Fetching data...");
       try {
@@ -126,16 +125,18 @@ const Home = () => {
                   key={dapp.dappId}
                   className="border rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col items-center"
                 >
-                  {/* Add the icon here */}
-                  <img
-                    src={dapp.url + "favicon.ico"}
-                    alt={`${dapp.name} icon`}
-                    className="w-12 h-12 mb-2" // 48x48 pixels with some margin
-                    onError={e => {
-                      // Hide the image if it fails to load
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
+                  <div className="w-12 h-12 mb-2 flex items-center justify-center">
+                    {dapp.imageUrl && (
+                      <img
+                        src={dapp.imageUrl}
+                        alt={`${dapp.name} icon`}
+                        className="max-w-full max-h-full object-contain"
+                        onError={e => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                    )}
+                  </div>
                   <h3 className="font-semibold text-lg text-center" style={{ color: "#7e5bc2" }}>
                     {dapp.name}
                   </h3>

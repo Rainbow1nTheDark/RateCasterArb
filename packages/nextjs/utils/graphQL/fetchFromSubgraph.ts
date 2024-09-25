@@ -47,6 +47,7 @@ export type DappRegistered = {
   description: string;
   name: string;
   url: string;
+  imageUrl: string;
   averageRating?: number;
 };
 

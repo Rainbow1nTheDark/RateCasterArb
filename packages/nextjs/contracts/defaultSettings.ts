@@ -1,14 +1,14 @@
 import { createConfig, http } from "@wagmi/core";
-import { baseSepolia } from "@wagmi/core/chains";
+import { polygon } from "@wagmi/core/chains";
 
-const BASE_SEPOLIA_CHAIN_ID = 84532;
-//const POLYGON_AMAY_CHAIN_ID = 80002;
-
-export const CHAIN_ID = BASE_SEPOLIA_CHAIN_ID;
+// const BASE_SEPOLIA_CHAIN_ID = 84532;
+// const POLYGON_AMAY_CHAIN_ID = 80002;
+const POLYGON_MAINNET = 137;
+export const CHAIN_ID = POLYGON_MAINNET;
 
 export const config = createConfig({
-  chains: [baseSepolia],
+  chains: [polygon],
   transports: {
-    [baseSepolia.id]: http(),
+    [polygon.id]: http(),
   },
 });
