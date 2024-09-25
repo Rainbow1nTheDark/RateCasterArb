@@ -3677,6 +3677,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:^18":
+  version: 18.3.9
+  resolution: "@types/react@npm:18.3.9"
+  dependencies:
+    "@types/prop-types": "*"
+    csstype: ^3.0.2
+  checksum: ac8c7cf6f9c5c2ecef790f3db6f98c672fdec0884f4e4730777fd18823207231cdd1d2e4673f473ef17a096c73c87bff309e83b026fb2602ba068371f0dc54fe
+  languageName: node
+  linkType: hard
+
 "@types/readable-stream@npm:^2.3.13":
   version: 2.3.15
   resolution: "@types/readable-stream@npm:2.3.15"
@@ -13393,6 +13403,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react@npm:^18.3.1":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: a27bcfa8ff7c15a1e50244ad0d0c1cb2ad4375eeffefd266a64889beea6f6b64c4966c9b37d14ee32d6c9fcd5aa6ba183b6988167ab4d127d13e7cb5b386a376
+  languageName: node
+  linkType: hard
+
 "read-cache@npm:^1.0.0":
   version: 1.0.0
   resolution: "read-cache@npm:1.0.0"
@@ -14106,6 +14125,7 @@ __metadata:
     "@types/nprogress": ^0.2.3
     "@types/pbkdf2": ^3.1.2
     "@types/prop-types": ^15.7.12
+    "@types/react": ^18
     "@types/semver": ^7.5.8
     axios: ^1.6.8
     dotenv: ^16.4.5
@@ -14115,6 +14135,7 @@ __metadata:
     husky: ^8.0.1
     lint-staged: ^13.0.3
     next: latest
+    react: ^18.3.1
     ts-node: ^10.9.2
     typescript: ^5.4.5
   languageName: unknown
