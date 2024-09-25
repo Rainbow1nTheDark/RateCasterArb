@@ -28,3 +28,4 @@
 # ENVs
 /packages/hardhat/.env
 /packages/nextjs/.env
+.vercel
