@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     description,
   },
   icons: {
-    icon: [{ url: "/optimist_star.webp", sizes: "32x32", type: "image/png" }],
+    icon: [{ url: "/logo.jpg", sizes: "32x32", type: "image/png" }],
   },
 };
 
