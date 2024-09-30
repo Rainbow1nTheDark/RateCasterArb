@@ -14,6 +14,7 @@ export type DappData = {
   platform: string;
   category: string;
   owner: string;
+  averageRating?: number;
 };
 
 // ***registerDapp is in the register-project page***

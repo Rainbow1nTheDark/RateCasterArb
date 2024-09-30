@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllDapps } from "~~/contracts/contractCalls";
-import { DappRating, DappRegistered, fetchDappRatings } from "~~/utils/graphQL/fetchFromSubgraph";
+import { DappData, getAllDapps } from "~~/contracts/contractCalls";
+import { DappRating, fetchDappRatings } from "~~/utils/graphQL/fetchFromSubgraph";
 
 type RatingsMap = { [dappId: string]: number };
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [dapps, setDapps] = useState<DappRegistered[] | undefined>(undefined);
-  const [allDapps, setAllDapps] = useState<DappRegistered[] | null>(null);
+  const [dapps, setDapps] = useState<DappData[] | undefined>(undefined);
+  const [allDapps, setAllDapps] = useState<DappData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,7 +21,6 @@ const Home = () => {
         setLoading(true);
 
         const dappData = await getAllDapps();
-        // const dappResult = await fetchGraphQLRegisteredDapps();
         let ratingsMap: RatingsMap = {};
         console.log(dappData);
         if (dappData) {
@@ -120,6 +119,7 @@ const Home = () => {
             {dapps
               .slice()
               .sort((a, b) => (b.averageRating ?? 0) - (a.averageRating ?? 0))
+              .filter(dapp => dapp.platform.toLowerCase() === "farcaster")
               .map(dapp => (
                 <div
                   key={dapp.dappId}
