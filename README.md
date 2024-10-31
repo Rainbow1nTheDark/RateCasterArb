@@ -1,27 +1,19 @@
-# Rate Caster Main Application
+# Rate Caster
 
 ## Introduction
-
-Rate Caster is a decentralized application (Dapp) built on the Base blockchain, designed to enhance transparency and trust within the Web3 ecosystem. This directory contains the core application, which includes the website and the smart contracts. The app is built using Scaffold-ETH 2, an open-source toolkit for building Dapps on the Ethereum blockchain.
+Rate Caster is a decentralized application (Dapp) built on the BSC blockchain, designed to enhance transparency and trust within the Web3 ecosystem. This directory contains the core application, which includes the website and the smart contracts. The app is built using Scaffold-ETH 2, an open-source toolkit for building Dapps.
 
 ## Why Rate Caster?
-
-The Web3 space is rapidly growing with numerous Dapps available to users. However, this vast array often leaves users overwhelmed and uncertain about the security, reliability, and trustworthiness of these applications. Rate Caster addresses this challenge by leveraging the Ethereum Attestation Service (EAS), providing a platform where community feedback leads the way in determining the trustworthiness of Dapps and their decisions.
+The Web3 space is rapidly growing with numerous Dapps available to users. However, this vast array often leaves users overwhelmed and uncertain about the security, reliability, and trustworthiness of these applications. Rate Caster addresses this challenge by leveraging the BNB Attestation Service (BAS), providing a platform where community feedback leads the way in determining the trustworthiness of Dapps and their decisions.
 
 ## Features
 
 ### Website
-
-- **Home Page**: Displays a list of registered Dapps along with their community ratings. Users can search and filter through the list to find applications of interest.
-- **Dapp Registration**: Allows users to register new Dapps on the platform, ensuring the database is continually updated with the latest applications.
-- **Dapp Rating and Reviews**: Users can leave detailed reviews and rate Dapps, contributing to the overall trust score of each application.
-- **My Reviews**: Users can view and manage their review history, with options to update or delete their past contributions.
-
-### Integration with Warpcaster
-
-- **Seamless Interaction**: Users can view popular Dapps and provide reviews within the Warpcaster chat frame.
-- **Mapped Reviews**: Future plans include mapping user reviews to Farcaster IDs, enhancing the credibility of reviews by associating them with real user profiles.
-
+* **Home Page**: Displays a list of registered Dapps along with their community ratings. Users can search and filter through the list to find applications of interest.
+* **Dapp Registration**: Allows users to register new Dapps on the platform, ensuring the database is continually updated with the latest applications.
+* **Dapp Rating and Reviews**: Users can leave detailed reviews and rate Dapps, contributing to the overall trust score of each application.
+* **My Reviews**: Users can view and manage their review history, with options to update or delete their past contributions.
+* **Profile Management**: Users can link their wallet addresses to enhance review credibility and manage their platform identity.
 ## Quickstart
 
 To get started with the Rate Caster application, follow the steps below:
@@ -63,10 +55,6 @@ To get started with the Rate Caster application, follow the steps below:
 ## Future Directions
 
 We believe in decentralized social applications and will be focusing on integrating and mapping Farcaster IDs to provided reviews. This will allow us to see Warpcaster profiles attached to the reviews, enhancing credibility and trust.
-
-## Contribution and Community
-
-Rate Caster is an open-source project, and community contributions are highly valued. Whether you're a developer, writer, or enthusiast, your input is welcome!
 
 ## Contact Us
 
