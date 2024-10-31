@@ -4,7 +4,7 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, DocumentDuplicateIcon, DocumentPlusIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -22,12 +22,7 @@ export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Register Project",
     href: "/register-project",
-    icon: <DocumentPlusIcon className="h-4 w-4 text-[#7e5bc2]" />,
-  },
-  {
-    label: "Leaderboard",
-    href: "/leaderboard",
-    icon: <DocumentDuplicateIcon className="h-4 w-4 text-[#7e5bc2]" />,
+    icon: <DocumentPlusIcon className="h-4 w-4 text-[#F4C430]" />,
   },
 ];
 
@@ -44,8 +39,8 @@ export const HeaderMenuLinks = () => {
               href={href}
               passHref
               className={`${
-                isActive ? "bg-secondary shadow-md" : ""
-              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+                isActive ? "bg-black text-white" : "text-black"
+              } hover:bg-black hover:text-white hover:shadow-md focus:!bg-black focus:!text-white py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
             >
               {icon}
               <span>{label}</span>
@@ -69,12 +64,14 @@ export const Header = () => {
   );
 
   return (
-    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
+    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-black px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className="lg:hidden dropdown" ref={burgerMenuRef}>
           <label
             tabIndex={0}
-            className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
+            className={`ml-1 btn btn-ghost ${
+              isDrawerOpen ? "hover:bg-black hover:text-white" : "hover:bg-transparent"
+            }`}
             onClick={() => {
               setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
             }}
@@ -95,7 +92,7 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.jpg" />
+            <Image alt="SE2 logo" className="cursor-pointer" fill src="/R3_bnb.jpg" />
           </div>
           <div className="flex flex-col">
             <span className="font-bold leading-tight">Rate Caster</span>

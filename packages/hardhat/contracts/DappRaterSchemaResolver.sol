@@ -2,8 +2,8 @@
 
 pragma solidity 0.8.25;
 
-import { IEAS, Attestation } from "@ethereum-attestation-service/eas-contracts/contracts/IEAS.sol";
-import { SchemaResolver } from "@ethereum-attestation-service/eas-contracts/contracts/resolver/SchemaResolver.sol";
+import { IEAS, Attestation } from "@bnb-attestation-service/bas-contracts/contracts/IEAS.sol";
+import { SchemaResolver } from "@bnb-attestation-service/bas-contracts/contracts/resolver/SchemaResolver.sol";
 
 /// @title DappRaterSchemaResolver
 /// @notice A sample schema resolver that logs a uint256 input.

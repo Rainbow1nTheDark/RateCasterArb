@@ -18,6 +18,8 @@ const deployerPrivateKey =
   process.env.DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 // If not set, it uses ours Etherscan default API key.
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
+// Get BSCScan API key from env
+const bscscanApiKey = process.env.BSCSCAN_API_KEY || "YOUR_DEFAULT_KEY";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -30,7 +32,14 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "polygon",
+  external: {
+    contracts: [
+      {
+        artifacts: "node_modules/@bnb-attestation-service/bas-contracts/artifacts",
+      },
+    ],
+  },
+  defaultNetwork: "bsc",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -73,6 +82,14 @@ const config: HardhatUserConfig = {
     },
     polygon: {
       url: `https://polygon-mainnet.g.alchemy.com/v2/${providerApiKey}`,
+      accounts: [deployerPrivateKey],
+    },
+    bscTestnet: {
+      url: `https://bsc-testnet-rpc.publicnode.com`,
+      accounts: [deployerPrivateKey],
+    },
+    bsc: {
+      url: `https://bsc-rpc.publicnode.com`,
       accounts: [deployerPrivateKey],
     },
     polygonMumbai: {
@@ -126,12 +143,33 @@ const config: HardhatUserConfig = {
   },
   // configuration for harhdat-verify plugin
   etherscan: {
-    apiKey: `${etherscanApiKey}`,
+    apiKey: {
+      bscTestnet: bscscanApiKey,
+      bsc: bscscanApiKey,
+    },
+    customChains: [
+      {
+        network: "bscTestnet",
+        chainId: 97,
+        urls: {
+          apiURL: "https://api-testnet.bscscan.com/api",
+          browserURL: "https://testnet.bscscan.com",
+        },
+      },
+      {
+        network: "bsc",
+        chainId: 56,
+        urls: {
+          apiURL: "https://api.bscscan.com/api",
+          browserURL: "https://bscscan.com",
+        },
+      },
+    ],
   },
   // configuration for etherscan-verify from hardhat-deploy plugin
   verify: {
     etherscan: {
-      apiKey: `${etherscanApiKey}`,
+      apiKey: etherscanApiKey,
     },
   },
   sourcify: {

@@ -49,11 +49,13 @@
     "lint-staged": "^13.0.3"
   },
   "dependencies": {
+    "@bnb-attestation-service/bas-contracts": "^0.2.0",
+    "@bnb-attestation-service/bas-sdk": "^0.1.0-beta.19",
     "@ethereum-attestation-service/eas-contracts": "^1.4.1",
     "@types/node": "^20.12.12",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.2",
+    "ethers": "^6.13.4",
     "graphql": "^16.8.1",
     "graphql-request": "5.1.0",
     "next": "latest",

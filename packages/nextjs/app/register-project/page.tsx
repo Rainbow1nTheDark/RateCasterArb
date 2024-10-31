@@ -17,9 +17,9 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white border-2 border-[#7e5bc2] p-4 rounded-lg">
+      <div className="bg-base-100 border-2 border-[#F4C430] p-4 rounded-lg">
         <div className="flex justify-end">
-          <button onClick={onClose} className="text-[#7e5bc2] font-bold">
+          <button onClick={onClose} className="text-[#F4C430] font-bold">
             X
           </button>
         </div>
@@ -92,76 +92,85 @@ const RegisterProject: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center pt-10 w-full">
-      <h1 className="text-4xl font-bold text-[#7e5bc2] mb-6">Register New Dapp!</h1>
+      <style jsx global>{`
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 30px white inset !important;
+          -webkit-text-fill-color: black !important;
+        }
+      `}</style>
+      <h1 className="text-4xl font-bold text-[#F4C430] mb-6">Register New Dapp!</h1>
       <form onSubmit={submit} className="space-y-4 w-full max-w-md">
         <div className="flex flex-col">
-          <label className="block mb-2">Name:</label>
+          <label className="block mb-2 text-black">Name:</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
             required
           />
         </div>
         <div className="flex flex-col">
-          <label className="block mb-2">Website:</label>
+          <label className="block mb-2 text-black">Website:</label>
           <input
             type="url"
             name="url"
             value={formData.url}
             onChange={handleChange}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
             required
           />
         </div>
         <div className="flex flex-col">
-          <label className="block mb-2">Image URL:</label>
+          <label className="block mb-2 text-black">Image URL:</label>
           <input
             type="url"
             name="imageURL"
             value={formData.imageURL}
             onChange={handleChange}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
           />
         </div>
         <div className="flex flex-col">
-          <label className="block mb-2">Description:</label>
+          <label className="block mb-2 text-black">Description:</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
             required
           />
         </div>
         <div className="flex flex-col">
-          <label className="block mb-2">Platform:</label>
+          <label className="block mb-2 text-black">Platform:</label>
           <input
             type="text"
             name="platform"
             value={formData.platform}
             onChange={handleChange}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
             required
           />
         </div>
         <div className="flex flex-col">
-          <label className="block mb-2">Category:</label>
+          <label className="block mb-2 text-black">Category:</label>
           <input
             type="text"
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
             required
           />
         </div>
         <button
           disabled={isPending}
           type="submit"
-          className="bg-[#7e5bc2] hover:bg-[#5e41a6] text-white font-bold py-2.5 px-4 mt-4 rounded-full"
+          className="bg-[#F4C430] hover:bg-[#B8860B] text-black font-bold py-2.5 px-4 mt-4 rounded-full transition-colors"
         >
           {isPending ? "Confirming..." : "Register"}
         </button>
@@ -169,11 +178,11 @@ const RegisterProject: NextPage = () => {
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         {hash ? (
           <div>
-            <p className="text-green-500 font-bold">The Project is Registered!</p>
-            <p>Hash: {hash}</p>
+            <p className="text-[#F4C430] font-bold">The Project is Registered!</p>
+            <p className="text-black">Hash: {hash}</p>
           </div>
         ) : (
-          <p className="text-yellow-500 font-bold">Confirming Transaction</p>
+          <p className="text-[#F4C430] font-bold">Confirming Transaction</p>
         )}
       </Modal>
     </div>

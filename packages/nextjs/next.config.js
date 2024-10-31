@@ -1,5 +1,3 @@
-// @ts-check
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -9,13 +7,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: process.env.NEXT_PUBLIC_IGNORE_BUILD_ERROR === "true",
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
   webpack: config => {
-    config.resolve.fallback = { fs: false, net: false, tls: false };
-    config.externals.push("pino-pretty", "lokijs", "encoding");
+    config.resolve.fallback = {
+      fs: false,
+      net: false,
+      tls: false,
+    };
     return config;
   },
 };
+
 module.exports = nextConfig;

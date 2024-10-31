@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { readContract } from "@wagmi/core";
 import { useWriteContract } from "wagmi";
@@ -8,12 +8,17 @@ import { CHAIN_ID, config } from "~~/contracts/defaultSettings";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { DappRegistered } from "~~/utils/graphQL/fetchFromSubgraph";
 
-// Define the types for the Modal component props
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }
+
+const colors = {
+  primary: "#F4C430", // Saffron yellow
+  secondary: "#000000", // Black
+  accent: "#B8860B", // Darker yellow for hover
+};
 
 async function getDappByDappId(dappId: string): Promise<DappRegistered> {
   const contract_address = deployedContracts[CHAIN_ID].DappRatingSystem.address;
@@ -24,7 +29,6 @@ async function getDappByDappId(dappId: string): Promise<DappRegistered> {
     functionName: "getDapp",
     args: [dappId as `0x${string}`],
   });
-
   return dappData;
 }
 
@@ -33,9 +37,9 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white border-2 border-[#7e5bc2] p-4 rounded-lg">
+      <div className="bg-base-100 border-2 border-[#F4C430] p-4 rounded-lg">
         <div className="flex justify-end">
-          <button onClick={onClose} className="text-[#7e5bc2] font-bold">
+          <button onClick={onClose} className="text-[#F4C430] font-bold">
             X
           </button>
         </div>
@@ -45,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
   );
 };
 
-const RateDapp = () => {
+const RateDappContent = () => {
   const searchParams = useSearchParams();
   const dappId = searchParams.get("dappId");
   const { data: hash, isPending, writeContract } = useWriteContract();
@@ -62,7 +66,6 @@ const RateDapp = () => {
         setLoading(true);
         const result = await getDappByDappId(dappId as string);
         if (result) {
-          console.log(result);
           setDappDetails(result);
           setError("");
         } else {
@@ -79,8 +82,6 @@ const RateDapp = () => {
 
   const submitReview = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(`${comment} ${rating}`);
     if (dappDetails?.dappId) {
       await writeContract({
         address: deployedContracts[CHAIN_ID].DappRatingSystem.address,
@@ -88,15 +89,12 @@ const RateDapp = () => {
         functionName: "addDappRating",
         args: [dappDetails.dappId as `0x${string}`, rating, comment],
       });
-
       setIsModalVisible(true);
-    } else {
-      console.log(`Wrong ID: ${dappDetails?.dappId}`);
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
     <div className="flex flex-col items-center pt-10 w-full">
@@ -109,37 +107,33 @@ const RateDapp = () => {
                 href={dappDetails.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#7e5bc2] hover:underline"
+                className="text-[#F4C430] hover:text-[#B8860B] transition-colors"
               >
                 {dappDetails.name.charAt(0).toUpperCase() + dappDetails.name.slice(1)}
               </a>
             </h1>
-            <p className="mb-4">{dappDetails.description}</p>
+            <p className="mb-4 text-black">{dappDetails.description}</p>
           </div>
         ) : (
-          <p>DApp details not found.</p>
+          <p className="text-black">DApp details not found.</p>
         )}
 
-        {/* Star Rating Input */}
         <div className="flex justify-center gap-1">
           {[...Array(5)].map((_, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setRating(index + 1)}
-              className={`h-16 w-16 rounded-full text-3xl leading-none ${
-                rating > index ? "text-gold bg-white" : "text-black-400 bg-white"
-              }`}
-              style={{ color: rating > index ? "gold" : "", backgroundColor: "white" }}
+              className="h-16 w-16 rounded-full text-3xl leading-none transition-colors"
+              style={{ color: rating > index ? colors.primary : colors.secondary }}
             >
               ★
             </button>
           ))}
         </div>
 
-        {/* Optional Comment */}
         <div className="flex flex-col w-full">
-          <label htmlFor="comment" className="block mb-2">
+          <label htmlFor="comment" className="block mb-2 text-black">
             Comment (optional):
           </label>
           <textarea
@@ -147,17 +141,16 @@ const RateDapp = () => {
             name="comment"
             value={comment}
             onChange={e => setComment(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#7e5bc2]"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
             placeholder="Add your comment here..."
           />
         </div>
 
-        {/* Submit Button */}
         <div className="flex justify-center">
           <button
             disabled={isPending}
             type="submit"
-            className="mt-4 bg-[#7e5bc2] hover:bg-[#5e41a6] text-white font-bold py-2.5 px-4 rounded-full"
+            className="mt-4 bg-[#F4C430] hover:bg-[#B8860B] text-black font-bold py-2.5 px-4 rounded-full transition-colors"
           >
             {isPending ? "Sending..." : "Submit Review"}
           </button>
@@ -166,14 +159,22 @@ const RateDapp = () => {
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         {hash ? (
           <div>
-            <p className="text-green-500 font-bold">Review Submitted!</p>
-            <p>Hash: {hash}</p>
+            <p className="text-[#F4C430] font-bold">Review Submitted!</p>
+            <p className="text-black">Hash: {hash}</p>
           </div>
         ) : (
-          <p className="text-yellow-500 font-bold">Processing Request</p>
+          <p className="text-[#F4C430] font-bold">Processing Request</p>
         )}
       </Modal>
     </div>
+  );
+};
+
+const RateDapp = () => {
+  return (
+    <Suspense fallback={<div className="text-center">Loading...</div>}>
+      <RateDappContent />
+    </Suspense>
   );
 };
 

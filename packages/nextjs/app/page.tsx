@@ -14,7 +14,15 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const colors = {
+    primary: "#F4C430", // Saffron yellow
+    secondary: "#000000", // Black
+    accent: "#FFF700", // Slightly different yellow for hover states
+    text: "#000000", // Black text
+  };
+
   useEffect(() => {
+    console.log("useEffect mounted");
     const fetchData = async () => {
       console.log("Fetching data...");
       try {
@@ -84,7 +92,7 @@ const Home = () => {
   const renderStars = (averageRating: number) => {
     const roundedRating = Math.round(averageRating);
     return [...Array(5)].map((_, i) => (
-      <span key={i} style={{ color: i < roundedRating ? "gold" : "grey", fontSize: "24px" }}>
+      <span key={i} style={{ color: i < roundedRating ? colors.primary : "#333333", fontSize: "24px" }}>
         ★
       </span>
     ));
@@ -93,37 +101,62 @@ const Home = () => {
   return (
     <div className="flex flex-col items-center pt-10">
       <div className="px-5 text-center">
-        <h1 className="text-4xl font-bold" style={{ color: "#7e5bc2" }}>
-          Rate your experience with Farcaster!
+        <h1
+          className="text-4xl font-bold"
+          style={{ color: colors.secondary, textShadow: `2px 2px 4px ${colors.primary}` }}
+        >
+          Rate your experience with BNB!
         </h1>
-        <p className="text-2xl my-2 font-medium">Search for a project:</p>
+        <p className="text-2xl my-2 font-medium" style={{ color: colors.text }}>
+          Search for a project:
+        </p>
         <div className="flex justify-center mt-4">
           <input
             type="text"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             placeholder="Enter project name"
-            className="w-full max-w-md px-4 py-2 border-2 rounded focus:outline-none focus:border-[#7e5bc2] shadow"
-            style={{ borderColor: "#7e5bc2", boxShadow: `0 0 5px #7e5bc2` }}
+            className="w-full max-w-md px-4 py-2 border-2 rounded focus:outline-none shadow"
+            style={{
+              borderColor: colors.secondary,
+              boxShadow: `0 0 5px ${colors.primary}`,
+              color: colors.text,
+            }}
           />
         </div>
       </div>
 
       <div className="w-full px-5 mt-6">
         {loading ? (
-          <p className="text-center">Loading...</p>
+          <p className="text-center" style={{ color: colors.text }}>
+            Loading...
+          </p>
         ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
+          <p className="text-center" style={{ color: "red" }}>
+            {error}
+          </p>
         ) : dapps && dapps.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {dapps
               .slice()
               .sort((a, b) => (b.averageRating ?? 0) - (a.averageRating ?? 0))
-              .filter(dapp => dapp.platform.toLowerCase() === "farcaster")
               .map(dapp => (
                 <div
                   key={dapp.dappId}
                   className="border rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col items-center"
+                  style={{
+                    borderColor: colors.primary,
+                    boxShadow: `0 2px 4px ${colors.primary}`,
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseOver={e => {
+                    e.currentTarget.style.boxShadow = `0 4px 8px ${colors.primary}`;
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseOut={e => {
+                    e.currentTarget.style.boxShadow = `0 2px 4px ${colors.primary}`;
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
                 >
                   <div className="w-12 h-12 mb-2 flex items-center justify-center">
                     {dapp.imageUrl && (
@@ -137,19 +170,29 @@ const Home = () => {
                       />
                     )}
                   </div>
-                  <h3 className="font-semibold text-lg text-center" style={{ color: "#7e5bc2" }}>
+                  <h3 className="font-semibold text-lg text-center" style={{ color: colors.secondary }}>
                     {dapp.name}
                   </h3>
-                  <p className="text-center mb-4">{dapp.description}</p>
+                  <p className="text-center mb-4" style={{ color: colors.text }}>
+                    {dapp.description}
+                  </p>
                   <div className="text-yellow-500">{renderStars(dapp.averageRating ?? 0)}</div>
                   <div className="flex justify-between items-center w-full mt-2">
-                    <a href={dapp.url} className="text-blue-500 hover:underline" style={{ color: "#7e5bc2" }}>
+                    <a
+                      href={dapp.url}
+                      className="hover:underline transition-colors"
+                      style={{ color: colors.secondary }}
+                      onMouseOver={e => (e.currentTarget.style.color = colors.primary)}
+                      onMouseOut={e => (e.currentTarget.style.color = colors.secondary)}
+                    >
                       Visit Site
                     </a>
                     <a
                       href={`/rate-dapp?dappId=${dapp.dappId}`}
-                      className="text-blue-500 hover:underline"
-                      style={{ color: "#7e5bc2" }}
+                      className="hover:underline transition-colors"
+                      style={{ color: colors.secondary }}
+                      onMouseOver={e => (e.currentTarget.style.color = colors.primary)}
+                      onMouseOut={e => (e.currentTarget.style.color = colors.secondary)}
                     >
                       Rate This App
                     </a>
@@ -159,9 +202,9 @@ const Home = () => {
           </div>
         ) : (
           <div className="text-center mt-4">
-            <p>
+            <p style={{ color: colors.text }}>
               Can&apos;t find what you&apos;re looking for?{" "}
-              <Link href="/register-project" className="text-red-500 hover:underline" style={{ color: "#7e5bc2" }}>
+              <Link href="/register-project" className="hover:underline" style={{ color: colors.primary }}>
                 Register a new project
               </Link>
               .

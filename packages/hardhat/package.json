@@ -35,7 +35,7 @@
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "ethers": "^6.10.0",
+    "ethers": "^6.13.4",
     "hardhat": "^2.19.4",
     "hardhat-deploy": "^0.11.45",
     "hardhat-deploy-ethers": "^0.4.1",
@@ -47,7 +47,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@ethereum-attestation-service/eas-contracts": "^1.4.1",
+    "@bnb-attestation-service/bas-contracts": "^0.2.0",
+    "@bnb-attestation-service/bas-sdk": "^0.1.0-beta.19",
+    "@ethereum-attestation-service/eas-contracts": "^1.7.1",
     "@openzeppelin/contracts": "^4.8.1",
     "@typechain/ethers-v6": "^0.5.1",
     "dotenv": "^16.4.5",

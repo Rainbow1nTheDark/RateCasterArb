@@ -71,3 +71,13 @@ Rate Caster is an open-source project, and community contributions are highly va
 ## Contact Us
 
 For support or further inquiries, reach us at [@crypto_fencer](https://twitter.com/crypto_fencer) / [#0xbuilders](https://0xbuilders.org) or by email at [web3enthusiast@icloud.com](mailto:web3enthusiast@icloud.com).
+
+Testnet:
+Resolver: 0x879CB3144def6047d1c3eA9784E82932d55Ebe67
+Schema: 0x0beb97f79e873b717add4df7d5d32bed7f19ba0ebdb81b66212048fd12ca89ba
+RatingSystem: 0x8fE2F121BBBa62AE00cbF34d4B58a16221e07c57
+
+Mainnet:
+Resolver 0x5e905F77f59491F03eBB78c204986aaDEB0C6bDa
+Schema: 0x0beb97f79e873b717add4df7d5d32bed7f19ba0ebdb81b66212048fd12ca89ba
+RatingSystem: 0x708FBBB40323780b7E29537F25804D10b9168474
