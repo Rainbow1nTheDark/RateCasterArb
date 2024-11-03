@@ -15,10 +15,10 @@ const Home = () => {
   const [error, setError] = useState("");
 
   const colors = {
-    primary: "#F4C430", // Saffron yellow
-    secondary: "#000000", // Black
-    accent: "#FFF700", // Slightly different yellow for hover states
-    text: "#000000", // Black text
+    primary: "#0066CC", // Strong blue for primary elements
+    secondary: "#1E3A8A", // Darker blue for text and emphasis
+    accent: "#3B82F6", // Bright blue for hover states
+    text: "#1E293B", // Dark blue-gray for regular text
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const Home = () => {
           className="text-4xl font-bold"
           style={{ color: colors.secondary, textShadow: `2px 2px 4px ${colors.primary}` }}
         >
-          Rate your experience with BNB!
+          Rate your experience with Arbitrum!
         </h1>
         <p className="text-2xl my-2 font-medium" style={{ color: colors.text }}>
           Search for a project:

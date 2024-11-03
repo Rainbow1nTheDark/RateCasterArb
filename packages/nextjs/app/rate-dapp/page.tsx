@@ -15,9 +15,11 @@ interface ModalProps {
 }
 
 const colors = {
-  primary: "#F4C430", // Saffron yellow
-  secondary: "#000000", // Black
-  accent: "#B8860B", // Darker yellow for hover
+  primary: "#0066CC", // Strong blue
+  secondary: "#1E3A8A", // Dark blue
+  accent: "#3B82F6", // Bright blue
+  text: "#1E293B", // Dark blue-gray
+  background: "#F0F7FF", // Very light blue
 };
 
 async function getDappByDappId(dappId: string): Promise<DappRegistered> {
@@ -37,9 +39,9 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose, children }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-base-100 border-2 border-[#F4C430] p-4 rounded-lg">
+      <div className="bg-base-100 border-2 border-[#0066CC] p-4 rounded-lg">
         <div className="flex justify-end">
-          <button onClick={onClose} className="text-[#F4C430] font-bold">
+          <button onClick={onClose} className="text-[#0066CC] font-bold hover:text-[#3B82F6]">
             X
           </button>
         </div>
@@ -101,21 +103,21 @@ const RateDappContent = () => {
       <form onSubmit={submitReview} className="space-y-4 w-full max-w-md">
         {dappDetails ? (
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-2">
+            <h1 className="text-4xl font-bold mb-2 text-[#1E3A8A]">
               Review{" "}
               <a
                 href={dappDetails.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#F4C430] hover:text-[#B8860B] transition-colors"
+                className="text-[#0066CC] hover:text-[#3B82F6] transition-colors"
               >
                 {dappDetails.name.charAt(0).toUpperCase() + dappDetails.name.slice(1)}
               </a>
             </h1>
-            <p className="mb-4 text-black">{dappDetails.description}</p>
+            <p className="mb-4 text-[#1E293B]">{dappDetails.description}</p>
           </div>
         ) : (
-          <p className="text-black">DApp details not found.</p>
+          <p className="text-[#1E293B]">DApp details not found.</p>
         )}
 
         <div className="flex justify-center gap-1">
@@ -133,7 +135,7 @@ const RateDappContent = () => {
         </div>
 
         <div className="flex flex-col w-full">
-          <label htmlFor="comment" className="block mb-2 text-black">
+          <label htmlFor="comment" className="block mb-2 text-[#1E293B]">
             Comment (optional):
           </label>
           <textarea
@@ -141,7 +143,7 @@ const RateDappContent = () => {
             name="comment"
             value={comment}
             onChange={e => setComment(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#F4C430] text-black"
+            className="w-full px-4 py-2 border-2 border-gray-300 focus:outline-none focus:border-[#0066CC] text-[#1E293B] rounded-md"
             placeholder="Add your comment here..."
           />
         </div>
@@ -150,7 +152,7 @@ const RateDappContent = () => {
           <button
             disabled={isPending}
             type="submit"
-            className="mt-4 bg-[#F4C430] hover:bg-[#B8860B] text-black font-bold py-2.5 px-4 rounded-full transition-colors"
+            className="mt-4 bg-[#0066CC] hover:bg-[#3B82F6] text-white font-bold py-2.5 px-4 rounded-full transition-colors disabled:bg-gray-400"
           >
             {isPending ? "Sending..." : "Submit Review"}
           </button>
@@ -159,11 +161,11 @@ const RateDappContent = () => {
       <Modal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         {hash ? (
           <div>
-            <p className="text-[#F4C430] font-bold">Review Submitted!</p>
-            <p className="text-black">Hash: {hash}</p>
+            <p className="text-[#0066CC] font-bold">Review Submitted!</p>
+            <p className="text-[#1E293B]">Hash: {hash}</p>
           </div>
         ) : (
-          <p className="text-[#F4C430] font-bold">Processing Request</p>
+          <p className="text-[#0066CC] font-bold">Processing Request</p>
         )}
       </Modal>
     </div>

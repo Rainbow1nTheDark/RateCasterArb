@@ -32,14 +32,8 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  external: {
-    contracts: [
-      {
-        artifacts: "node_modules/@bnb-attestation-service/bas-contracts/artifacts",
-      },
-    ],
-  },
-  defaultNetwork: "bsc",
+
+  defaultNetwork: "arbitrum",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer

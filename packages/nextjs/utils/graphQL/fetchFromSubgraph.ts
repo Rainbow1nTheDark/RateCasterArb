@@ -1,8 +1,8 @@
 import * as dotenv from "dotenv";
 
 dotenv.config();
-const ALCHEMY_SUBGRAPH_KEY = "8913ac6ee1bc";
-const ENDPOINT_DAPP_RATING_SYSTEM = `https://subgraph.satsuma-prod.com/${ALCHEMY_SUBGRAPH_KEY}/alexanders-team--782474/ratecaster-bsc/version/v0.0.1-new-version/api`;
+
+const ENDPOINT_DAPP_RATING_SYSTEM = `https://subgraph.satsuma-prod.com/cbe1d55bb5ce/alexs-team--731451/arbitrum-ratecaster/api`;
 //const ENDPOINT_DAPP_RATER_SCHEMA_RESOLVER = `https://subgraph.satsuma-prod.com/${ALCHEMY_SUBGRAPH_KEY}/alexanders-team--782474/DappRaterSchemaResolver/api`;
 // Define a TypeScript type for the function parameters
 

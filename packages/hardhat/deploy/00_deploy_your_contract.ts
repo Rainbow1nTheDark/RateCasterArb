@@ -23,9 +23,9 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   const { deploy } = hre.deployments;
   // const EAS_CONTRACT_ADDRESS_POLYGON = "0x5E634ef5355f45A855d02D66eCD687b1502AF790"; // Polygon Mainnet
   // const BAS_CONTRACT_ADDRESS_BSC = "0x6c2270298b1e6046898a322acB3Cbad6F99f7CBD"; // BSC testnet
-  const BAS_CONTRACT_ADDRESS_MAINNET = "0x247Fe62d887bc9410c3848DF2f322e52DA9a51bC"; // BSC Mainnet
-
-  const DAPP_RATER_SCHEMA = "0x0beb97f79e873b717add4df7d5d32bed7f19ba0ebdb81b66212048fd12ca89ba"; // BSC Mainnet
+  // const BAS_CONTRACT_ADDRESS_MAINNET = "0x247Fe62d887bc9410c3848DF2f322e52DA9a51bC"; // BSC Mainnet
+  const EAS_CONTRACT_ADDRESS_ARBITRUM = "0xbD75f629A22Dc1ceD33dDA0b68c546A1c035c458"; // Arbitrum Mainnet
+  // const DAPP_RATER_SCHEMA = "0x0beb97f79e873b717add4df7d5d32bed7f19ba0ebdb81b66212048fd12ca89ba"; // BSC Mainnet
 
   // ******* Schema Addresses:
   // Base-Sepolia: "0xeaa96eb7dd9a3101cabc983cfbfcacc1594c70832d37a79b51bc43db4e4e40fb";
@@ -33,13 +33,14 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   // BSC Mainnet: '0x0beb97f79e873b717add4df7d5d32bed7f19ba0ebdb81b66212048fd12ca89ba'
 
   //const DAPP_RATER_SCHEMA = "0x2330fb2f2197b04f5f09645fec2ea4d2420f5f3715796b846384a03e959f2845"; // Polygon Mainnet
+  const DAPP_RATER_SCHEMA_ARBITRUM = "0xf16f81ef6f8b8e8aaa4eb3ddc467a5d52bf2ab52c96bf8438a01e93d373b9405";
   const deployer = "0xE0a7c71d21C8d4407dca3788C33C93E9A7160fe8";
 
   // console.log("Deploying DappRaterSchemaResolver");
   // await deploy("DappRaterSchemaResolver", {
   //   from: deployer,
   //   // Contract constructor arguments
-  //   args: [BAS_CONTRACT_ADDRESS_BSC],
+  //   args: [EAS_CONTRACT_ADDRESS_ARBITRUM],
   //   log: true,
   //   gasLimit: 5000000,
   //   // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
@@ -70,16 +71,25 @@ const deployDappRaterSchemaResolver: DeployFunction = async function (hre: Hardh
   // const uid = await transaction.wait();
   // console.log("Schema UID: ", uid);
   // console.log("Deploying DappRatingSystem");
+  const provider = hre.ethers.provider;
+  const feeData = await provider.getFeeData();
+  const factory = await hre.ethers.getContractFactory("DappRatingSystem");
 
+  // Estimate gas for deployment
+  const deployTx = await factory.getDeployTransaction(EAS_CONTRACT_ADDRESS_ARBITRUM, DAPP_RATER_SCHEMA_ARBITRUM);
+  const estimatedGas = await provider.estimateGas(deployTx);
+
+  // Add a buffer (20% more than estimated)
+  const gasLimit = Math.ceil(Number(estimatedGas) * 1.2);
   await deploy("DappRatingSystem", {
     from: deployer,
-    args: [BAS_CONTRACT_ADDRESS_MAINNET, DAPP_RATER_SCHEMA],
+    args: [EAS_CONTRACT_ADDRESS_ARBITRUM, DAPP_RATER_SCHEMA_ARBITRUM],
     log: true,
     autoMine: true,
     // Increase gas limit
-    gasLimit: 4000000,
-    maxFeePerGas: "3000000000", // 3 gwei
-    maxPriorityFeePerGas: "1000000000", // 1 gwei
+    gasLimit: gasLimit,
+    maxFeePerGas: feeData.maxFeePerGas?.toString(),
+    maxPriorityFeePerGas: feeData.maxPriorityFeePerGas?.toString(),
   });
 };
 
